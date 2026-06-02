@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Campus Lab Programs</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #687083;
+      --line: #dbe3ee;
+      --brand: #0f766e;
+      --brand-dark: #115e59;
+      --accent: #2563eb;
+      --soft: #e5f4f1;
+      --code: #0b1220;
+      --radius: 8px;
+      --shadow: 0 14px 38px rgba(23, 32, 51, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    header {
+      color: #fff;
+      background:
+        radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.22), transparent 28%),
+        linear-gradient(125deg, #0f766e, #2563eb);
+      padding: 64px 0 76px;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 34px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 850;
+    }
+
+    .mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: var(--brand-dark);
+      background: #fff;
+      font-weight: 950;
+    }
+
+    .link {
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-weight: 760;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.04;
+      letter-spacing: 0;
+      max-width: 850px;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.08rem;
+    }
+
+    main {
+      padding: 28px 0 56px;
+    }
+
+    .tabs {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 14px 0;
+      background: rgba(245, 247, 251, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      color: #fff;
+      background: var(--brand);
+      border-color: var(--brand);
+    }
+
+    .lab {
+      display: none;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .lab.active {
+      display: grid;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-body {
+      padding: 18px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    .panel p {
+      color: var(--muted);
+      margin: 8px 0 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-weight: 750;
+      font-size: 0.92rem;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 11px;
+      color: var(--ink);
+      font: inherit;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--brand);
+      outline: 3px solid rgba(15, 118, 110, 0.14);
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      background: var(--brand);
+      color: white;
+      padding: 10px 14px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--brand-dark);
+    }
+
+    .output {
+      min-height: 160px;
+      margin-top: 16px;
+      border-radius: 8px;
+      background: var(--code);
+      color: #dbeafe;
+      padding: 15px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      white-space: pre-wrap;
+      overflow: auto;
+    }
+
+    pre {
+      margin: 0;
+      max-height: 590px;
+      overflow: auto;
+      background: var(--code);
+      color: #dbeafe;
+      padding: 18px;
+      font-size: 0.88rem;
+    }
+
+    .note {
+      display: inline-flex;
+      color: var(--brand-dark);
+      background: var(--soft);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-weight: 850;
+      font-size: 0.82rem;
+    }
+
+    footer {
+      padding: 24px 0;
+      text-align: center;
+      color: #dbeafe;
+      background: #101827;
+    }
+
+    @media (max-width: 920px) {
+      .lab,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="topline">
+        <div class="brand"><span class="mark">SC</span> Smart Campus Labs</div>
+        <a class="link" href="index.html">Open Integrated Project</a>
+      </div>
+      <h1>Separate Executable Lab Programs</h1>
+      <p>Each lab has its own Python code, input panel, and run button. The browser executes JavaScript equivalents so the outputs can be checked instantly in a static website.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="tabs" id="tabs"></div>
+    <div id="labs"></div>
+  </main>
+
+  <footer>Smart Campus Information System | Q1-Q8 Separate Lab Program Runner</footer>
+
+  <script>
+    const labs = [
+      {
+        id: "q1",
+        title: "Q1. Student Registration and Grade Evaluation",
+        description: "Accept student name and exam score, then display grade and performance remark.",
+        fields: [
+          { id: "name", label: "Student Name", value: "Riya Nair" },
+          { id: "score", label: "Exam Score", value: "86", type: "number" }
+        ],
+        code: `student_name = input("Enter student name: ")
+score = float(input("Enter exam score: "))
+
+if score >= 90:
+    grade = "A"
+    remark = "Excellent"
+elif score >= 75:
+    grade = "B"
+    remark = "Very Good"
+elif score >= 60:
+    grade = "C"
+    remark = "Good"
+elif score >= 40:
+    grade = "D"
+    remark = "Average"
+else:
+    grade = "F"
+    remark = "Needs Improvement"
+
+print("Student Name:", student_name)
+print("Score:", score)
+print("Grade:", grade)
+print("Performance Remark:", remark)`,
+        run(values) {
+          const score = Number(values.score);
+          let grade = "F";
+          let remark = "Needs Improvement";
+          if (score >= 90) [grade, remark] = ["A", "Excellent"];
+          else if (score >= 75) [grade, remark] = ["B", "Very Good"];
+          else if (score >= 60) [grade, remark] = ["C", "Good"];
+          else if (score >= 40) [grade, remark] = ["D", "Average"];
+          return `Student Name: ${values.name}\nScore: ${score}\nGrade: ${grade}\nPerformance Remark: ${remark}`;
+        }
+      },
+      {
+        id: "q2",
+        title: "Q2. Course Enrollment Management System",
+        description: "Use loops to add courses, continue to skip invalid credits, and break at the maximum course limit.",
+        fields: [
+          { id: "courses", label: "Courses, one per line as Course:Credits", value: "Python:4\nDBMS:3\nInvalid Course:-2\nWeb Development:4\nAI:3\nCloud:2", textarea: true },
+          { id: "max", label: "Maximum Courses", value: "5", type: "number" }
+        ],
+        code: `courses = []
+max_courses = 5
+
+while True:
+    if len(courses) == max_courses:
+        print("Maximum course limit reached.")
+        break
+
+    course_name = input("Enter course name or STOP: ")
+    if course_name.upper() == "STOP":
+        break
+
+    credits = int(input("Enter credits: "))
+    if credits <= 0:
+        print("Invalid credits. Skipping course.")
+        continue
+
+    courses.append({"course": course_name, "credits": credits})
+
+print("Enrolled Courses:", courses)`,
+        run(values) {
+          const max = Number(values.max);
+          const enrolled = [];
+          const messages = [];
+          values.courses.split("\n").forEach((line) => {
+            if (enrolled.length === max) {
+              messages.push("Maximum course limit reached. break executed.");
+              return;
+            }
+            const [course, creditText] = line.split(":");
+            const credits = Number(creditText);
+            if (!course || !creditText || credits <= 0 || Number.isNaN(credits)) {
+              messages.push(`Invalid input skipped using continue: ${line}`);
+              return;
+            }
+            enrolled.push({ course: course.trim(), credits });
+          });
+          return `${messages.join("\n")}\n\nEnrolled Courses:\n${JSON.stringify(enrolled, null, 2)}`;
+        }
+      },
+      {
+        id: "q3",
+        title: "Q3. Student Record Data Management using Data Structures",
+        description: "Store records with lists and dictionaries, then use sets to find common event participants.",
+        fields: [
+          { id: "records", label: "Records as Name,Age,Grade", value: "Asha,19,A\nVikram,20,B\nMeera,18,A", textarea: true },
+          { id: "event1", label: "Coding Event IDs", value: "SC101,SC102,SC104" },
+          { id: "event2", label: "Sports Event IDs", value: "SC102,SC103,SC104" }
+        ],
+        code: `students = []
+
+students.append({"name": "Asha", "age": 19, "grade": "A"})
+students.append({"name": "Vikram", "age": 20, "grade": "B"})
+students.append({"name": "Meera", "age": 18, "grade": "A"})
+
+coding_event = {"SC101", "SC102", "SC104"}
+sports_event = {"SC102", "SC103", "SC104"}
+common_participants = coding_event.intersection(sports_event)
+
+print("Student Records:", students)
+print("Common Participants:", common_participants)`,
+        run(values) {
+          const students = values.records.split("\n").filter(Boolean).map((line) => {
+            const [name, age, grade] = line.split(",").map((part) => part.trim());
+            return { name, age: Number(age), grade };
+          });
+          const event1 = new Set(values.event1.split(",").map((item) => item.trim()).filter(Boolean));
+          const event2 = new Set(values.event2.split(",").map((item) => item.trim()).filter(Boolean));
+          const common = [...event1].filter((id) => event2.has(id));
+          return `Student Records:\n${JSON.stringify(students, null, 2)}\n\nCommon Participants:\n${common.join(", ") || "None"}`;
+        }
+      },
+      {
+        id: "q4",
+        title: "Q4. Sorting and Searching of Student IDs",
+        description: "Sort student IDs using bubble sort and search with linear and binary search.",
+        fields: [
+          { id: "ids", label: "Student IDs", value: "105,101,109,103,102" },
+          { id: "target", label: "Target ID", value: "103" }
+        ],
+        code: `student_ids = [105, 101, 109, 103, 102]
+
+for i in range(len(student_ids)):
+    for j in range(0, len(student_ids) - i - 1):
+        if student_ids[j] > student_ids[j + 1]:
+            student_ids[j], student_ids[j + 1] = student_ids[j + 1], student_ids[j]
+
+target = int(input("Enter ID to search: "))
+
+linear_position = -1
+for index in range(len(student_ids)):
+    if student_ids[index] == target:
+        linear_position = index
+        break
+
+low = 0
+high = len(student_ids) - 1
+binary_position = -1
+while low <= high:
+    mid = (low + high) // 2
+    if student_ids[mid] == target:
+        binary_position = mid
+        break
+    elif student_ids[mid] < target:
+        low = mid + 1
+    else:
+        high = mid - 1
+
+print("Sorted IDs:", student_ids)
+print("Linear Search:", linear_position)
+print("Binary Search:", binary_position)`,
+        run(values) {
+          const ids = values.ids.split(",").map(Number).filter((id) => !Number.isNaN(id));
+          const sorted = [...ids];
+          for (let i = 0; i < sorted.length; i += 1) {
+            for (let j = 0; j < sorted.length - i - 1; j += 1) {
+              if (sorted[j] > sorted[j + 1]) [sorted[j], sorted[j + 1]] = [sorted[j + 1], sorted[j]];
+            }
+          }
+          const target = Number(values.target);
+          const linear = ids.indexOf(target);
+          let low = 0;
+          let high = sorted.length - 1;
+          let binary = -1;
+          while (low <= high) {
+            const mid = Math.floor((low + high) / 2);
+            if (sorted[mid] === target) {
+              binary = mid;
+              break;
+            }
+            if (sorted[mid] < target) low = mid + 1;
+            else high = mid - 1;
+          }
+          return `Original IDs: ${ids.join(", ")}\nBubble Sorted IDs: ${sorted.join(", ")}\nLinear Search Index: ${linear}\nBinary Search Index: ${binary}`;
+        }
+      },
+      {
+        id: "q5",
+        title: "Q5. Student Fee Calculation using Functions",
+        description: "Calculate total fee using function parameters and default arguments.",
+        fields: [
+          { id: "tuition", label: "Tuition Fee", value: "25000", type: "number" },
+          { id: "hostel", label: "Hostel Fee", value: "18000", type: "number" },
+          { id: "transport", label: "Transportation Fee", value: "6000", type: "number" }
+        ],
+        code: `def calculate_fee(tuition_fee, hostel_fee=0, transportation_fee=0):
+    total = tuition_fee + hostel_fee + transportation_fee
+    return total
+
+tuition = float(input("Enter tuition fee: "))
+hostel = float(input("Enter hostel fee or 0: "))
+transport = float(input("Enter transportation fee or 0: "))
+
+print("Total Payable Fee:", calculate_fee(tuition, hostel, transport))`,
+        run(values) {
+          const total = Number(values.tuition) + Number(values.hostel || 0) + Number(values.transport || 0);
+          return `Tuition Fee: ₹${values.tuition}\nHostel Fee: ₹${values.hostel || 0}\nTransportation Fee: ₹${values.transport || 0}\nTotal Payable Fee: ₹${total}`;
+        }
+      },
+      {
+        id: "q6",
+        title: "Q6. File Handling for Student Academic Records",
+        description: "Write records to a file, read stored records, and generate a simple report.",
+        fields: [
+          { id: "records", label: "Records as Name,Marks", value: "Asha,91\nVikram,78\nMeera,64", textarea: true }
+        ],
+        code: `records = ["Asha,91", "Vikram,78", "Meera,64"]
+
+with open("academic_records.txt", "w") as file:
+    for record in records:
+        file.write(record + "\\n")
+
+with open("academic_records.txt", "r") as file:
+    stored_records = file.readlines()
+
+total = 0
+for record in stored_records:
+    name, marks = record.strip().split(",")
+    total += int(marks)
+
+print("Stored Records:", stored_records)
+print("Average Marks:", total / len(stored_records))`,
+        run(values) {
+          const records = values.records.split("\n").filter(Boolean).map((line) => {
+            const [name, marks] = line.split(",").map((part) => part.trim());
+            return { name, marks: Number(marks) };
+          });
+          const average = records.reduce((sum, item) => sum + item.marks, 0) / Math.max(records.length, 1);
+          return `Simulated file write: academic_records.txt\n\nStored Records:\n${records.map((item) => `${item.name},${item.marks}`).join("\n")}\n\nSimple Report:\nTotal Records: ${records.length}\nAverage Marks: ${average.toFixed(2)}`;
+        }
+      },
+      {
+        id: "q7",
+        title: "Q7. Directory Scanning with Exception Handling",
+        description: "Scan a student project folder and handle invalid paths with user-defined exceptions.",
+        fields: [
+          { id: "path", label: "Directory Path", value: "student_projects" },
+          { id: "files", label: "Project Files, one per line", value: "student_projects/app.py\nstudent_projects/report.pdf\nstudent_projects/data/marks.csv", textarea: true }
+        ],
+        code: `import os
+
+class InvalidProjectDirectoryError(Exception):
+    pass
+
+directory = input("Enter directory path: ")
+
+try:
+    if not os.path.isdir(directory):
+        raise InvalidProjectDirectoryError("Invalid directory path")
+
+    for root, folders, files in os.walk(directory):
+        print(root)
+        for file_name in files:
+            print(" -", file_name)
+
+except InvalidProjectDirectoryError as error:
+    print("User-defined exception:", error)
+except FileNotFoundError:
+    print("Missing file or folder")
+except PermissionError:
+    print("Permission denied")`,
+        run(values) {
+          const path = values.path.trim();
+          if (!path) return "User-defined exception: Invalid directory path";
+          const files = values.files.split("\n").map((line) => line.trim()).filter(Boolean);
+          const matching = files.filter((file) => file.startsWith(path));
+          if (!matching.length) return `User-defined exception: No files found for '${path}'`;
+          return `Directory scan for ${path}/\n${matching.map((file) => ` - ${file}`).join("\n")}`;
+        }
+      },
+      {
+        id: "q8",
+        title: "Q8. Student Performance Analysis using NumPy, Pandas, Matplotlib",
+        description: "Analyze CSV-style performance data and generate statistical summary plus chart data.",
+        fields: [
+          { id: "csv", label: "CSV Data: Name,Marks", value: "Asha,91\nVikram,78\nMeera,64\nFarhan,88", textarea: true }
+        ],
+        code: `import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.read_csv("student_performance.csv")
+marks = np.array(data["Marks"])
+
+print("Mean:", np.mean(marks))
+print("Maximum:", np.max(marks))
+print("Minimum:", np.min(marks))
+print(data.describe())
+
+plt.bar(data["Name"], data["Marks"])
+plt.title("Student Performance Analysis")
+plt.xlabel("Student")
+plt.ylabel("Marks")
+plt.show()`,
+        run(values) {
+          const rows = values.csv.split("\n").filter(Boolean).map((line) => {
+            const [name, marks] = line.split(",").map((part) => part.trim());
+            return { name, marks: Number(marks) };
+          });
+          const marks = rows.map((row) => row.marks);
+          const mean = marks.reduce((sum, mark) => sum + mark, 0) / Math.max(marks.length, 1);
+          const max = Math.max(...marks);
+          const min = Math.min(...marks);
+          const chart = rows.map((row) => `${row.name.padEnd(10, " ")} ${"#".repeat(Math.round(row.marks / 5))} ${row.marks}`).join("\n");
+          return `NumPy/Pandas Style Summary\nMean: ${mean.toFixed(2)}\nMaximum: ${max}\nMinimum: ${min}\nCount: ${rows.length}\n\nMatplotlib-style Bar Chart\n${chart}`;
+        }
+      }
+    ];
+
+    const tabs = document.getElementById("tabs");
+    const labsHost = document.getElementById("labs");
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function renderLab(lab, index) {
+      const tab = document.createElement("button");
+      tab.className = `tab${index === 0 ? " active" : ""}`;
+      tab.textContent = lab.id.toUpperCase();
+      tab.type = "button";
+      tab.addEventListener("click", () => activateLab(lab.id));
+      tabs.appendChild(tab);
+
+      const section = document.createElement("section");
+      section.className = `lab${index === 0 ? " active" : ""}`;
+      section.id = lab.id;
+      section.innerHTML = `
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <span class="note">${lab.id.toUpperCase()}</span>
+              <h2>${lab.title}</h2>
+              <p>${lab.description}</p>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="grid">
+              ${lab.fields.map((field) => `
+                <label class="${field.textarea ? "full" : ""}">${field.label}
+                  ${field.textarea
+                    ? `<textarea data-field="${field.id}">${escapeHtml(field.value)}</textarea>`
+                    : `<input data-field="${field.id}" type="${field.type || "text"}" value="${escapeHtml(field.value)}" />`
+                  }
+                </label>
+              `).join("")}
+            </div>
+            <div style="margin-top: 14px;">
+              <button type="button" data-run="${lab.id}">Run ${lab.id.toUpperCase()}</button>
+            </div>
+            <div class="output" id="${lab.id}-output">Click Run ${lab.id.toUpperCase()} to execute this lab.</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Python Code</h3>
+          </div>
+          <pre><code>${escapeHtml(lab.code)}</code></pre>
+        </div>
+      `;
+      labsHost.appendChild(section);
+    }
+
+    function activateLab(id) {
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.classList.toggle("active", tab.textContent.toLowerCase() === id);
+      });
+      document.querySelectorAll(".lab").forEach((section) => {
+        section.classList.toggle("active", section.id === id);
+      });
+    }
+
+    function runLab(id) {
+      const lab = labs.find((item) => item.id === id);
+      const section = document.getElementById(id);
+      const values = {};
+      section.querySelectorAll("[data-field]").forEach((field) => {
+        values[field.dataset.field] = field.value;
+      });
+      section.querySelector(`#${id}-output`).textContent = lab.run(values);
+    }
+
+    labs.forEach(renderLab);
+    document.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-run]");
+      if (button) runLab(button.dataset.run);
+    });
+  </script>
+</body>
+</html>
